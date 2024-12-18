@@ -4,14 +4,42 @@ server:
 spring:
   application:
     name: api-gateway
+  main:
+    web-application-type: reactive
 
   cloud:
     gateway:
+      default-filters:
+        - name: AddRequestHeader
+          args:
+            name: X-Correlation-ID
+            value: correlation-id
       routes:
         - id: auth-service
           uri: lb://AUTH-SERVICE
           predicates:
             - Path=/auth/**
+        # Uncomment the filters below if you want to enable CircuitBreaker for the auth-service
+        #   filters:
+        #     - name: CircuitBreaker
+        #       args:
+        #         name: authServiceCircuitBreaker
+        #         fallbackUri: forward:/fallback/auth
+
+        - id: user-service
+          uri: lb://USERS-SERVICE
+          predicates:
+            - Path=/users/**
+#          filters:
+#            - name: Retry
+#              args:
+#                retries: 3
+#                statuses: BAD_GATEWAY
+
+        - id: post-service
+          uri: lb://POST-SERVICE
+          predicates:
+            - Path=/posts/**
 
 eureka:
   client:

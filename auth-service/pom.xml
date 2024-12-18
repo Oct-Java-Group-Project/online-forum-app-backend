@@ -89,6 +89,14 @@
 			<artifactId>jakarta.validation-api</artifactId>
 		</dependency>
 
+		<!-- Lombok for Code Generation -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+			<optional>true</optional>
+		</dependency>
+
 		<!-- JSON Web Tokens (JJWT) -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
